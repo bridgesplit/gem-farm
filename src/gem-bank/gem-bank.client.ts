@@ -1,6 +1,6 @@
 import * as anchor from '@project-serum/anchor';
 import { BN, Idl, Program, Provider } from '@project-serum/anchor';
-import { Connection, Keypair, PublicKey, SystemProgram } from '@solana/web3.js';
+import { Connection, Keypair, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import {
   AccountInfo,
   ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -217,6 +217,35 @@ export class GemBankClient extends AccountUtils {
     });
 
     return { txSig };
+  }
+
+
+  async initVaultAndDepositGem(bank: PublicKey,
+    payer: PublicKey,
+    owner: PublicKey,
+    name: string) {
+    const creatorPk = isKp(creator)
+      ? (<Keypair>creator).publicKey
+      : <PublicKey>creator;
+
+    const [vault, vaultBump] = await findVaultPDA(bank, creatorPk);
+    const [vaultAuth, vaultAuthBump] = await findVaultAuthorityPDA(vault); //nice-to-have
+
+    const transaction = new Transaction();
+    const initIx = this.bankProgram.instruction.initVault(owner, name, {
+      accounts: {
+        bank,
+        vault,
+        creator: payer,
+        payer: payer,
+        systemProgram: SystemProgram.programId
+      },
+    });
+
+    const depositIx = this.buildDepositGem()
+
+
+
   }
 
   async initVault(
