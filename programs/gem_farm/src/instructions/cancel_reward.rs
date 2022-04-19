@@ -61,7 +61,7 @@ impl<'info> CancelReward<'info> {
 pub fn handler(ctx: Context<CancelReward>) -> Result<()> {
     // update existing rewards
     let farm = &mut ctx.accounts.farm;
-    let now_ts = now_ts()?;
+    let now_ts = now_ts().unwrap_or(0);
 
     farm.update_rewards(now_ts, None, true)?;
 

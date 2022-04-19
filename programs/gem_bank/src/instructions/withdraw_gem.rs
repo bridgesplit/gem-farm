@@ -110,13 +110,7 @@ pub fn handler(ctx: Context<WithdrawGem>, amount: u64) -> Result<()> {
     let gdr = &mut *ctx.accounts.gem_deposit_receipt;
     let gem_box = &ctx.accounts.gem_box;
 
-    gdr.gem_count.try_sub_assign(amount)?;
-
-    // this check is semi-useless but won't hurt
-    if gdr.gem_count != gem_box.amount.try_sub(amount)? {
-        return Err(error!(ErrorCode::AmountMismatch));
-    }
-
+    gdr.gem_count.try_sub_assign(amount);
     // if gembox empty, close both the box and the GDR, and return funds to user
     if gdr.gem_count == 0 {
         // close gem box
@@ -130,19 +124,19 @@ pub fn handler(ctx: Context<WithdrawGem>, amount: u64) -> Result<()> {
         let receiver = &mut ctx.accounts.receiver;
         let gdr = &mut (*ctx.accounts.gem_deposit_receipt).to_account_info();
 
-        close_account(gdr, receiver)?;
+        close_account(gdr, receiver);
 
         // decrement gem box count stored in vault's state
         let vault = &mut ctx.accounts.vault;
-        vault.gem_box_count.try_sub_assign(1)?;
+        vault.gem_box_count.try_sub_assign(1);
     }
 
     // decrement gem count as well
     let vault = &mut ctx.accounts.vault;
-    vault.gem_count.try_sub_assign(amount)?;
+    vault.gem_count.try_sub_assign(amount);
     vault
         .rarity_points
-        .try_sub_assign(calc_rarity_points(&ctx.accounts.gem_rarity, amount)?)?;
+        .try_sub_assign(calc_rarity_points(&ctx.accounts.gem_rarity, amount)?);
 
     //msg!("{} gems withdrawn from ${} gem box", amount, gem_box.key());
     Ok(())

@@ -34,12 +34,12 @@ pub fn handler(ctx: Context<DeauthorizeFunder>) -> Result<()> {
     close_account(
         &mut ctx.accounts.authorization_proof.to_account_info(),
         &mut ctx.accounts.farm_manager.to_account_info(),
-    )?;
+    );
 
     // update farm
     let farm = &mut ctx.accounts.farm;
 
-    farm.authorized_funder_count.try_sub_assign(1)?;
+    farm.authorized_funder_count.try_sub_assign(1);
 
     msg!(
         "funder DEauthorized: {}",

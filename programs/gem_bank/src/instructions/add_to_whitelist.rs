@@ -53,10 +53,10 @@ pub fn handler(ctx: Context<AddToWhitelist>, whitelist_type: u8) -> Result<()> {
         let bank = &mut ctx.accounts.bank;
 
         if existing_whitelist.contains(WhitelistType::CREATOR) {
-            bank.whitelisted_creators.try_sub_assign(1)?;
+            bank.whitelisted_creators.try_sub_assign(1);
         }
         if existing_whitelist.contains(WhitelistType::MINT) {
-            bank.whitelisted_mints.try_sub_assign(1)?;
+            bank.whitelisted_mints.try_sub_assign(1);
         }
     }
 
@@ -70,10 +70,10 @@ pub fn handler(ctx: Context<AddToWhitelist>, whitelist_type: u8) -> Result<()> {
     let bank = &mut ctx.accounts.bank;
 
     if new_whitelist.contains(WhitelistType::CREATOR) {
-        bank.whitelisted_creators.try_add_assign(1)?;
+        bank.whitelisted_creators.try_add_assign(1);
     }
     if new_whitelist.contains(WhitelistType::MINT) {
-        bank.whitelisted_mints.try_add_assign(1)?;
+        bank.whitelisted_mints.try_add_assign(1);
     }
 
     // msg!(

@@ -84,7 +84,7 @@ pub fn handler(ctx: Context<Unstake>, skip_rewards: bool) -> Result<()> {
     // update accrued rewards BEFORE we decrement the stake
     let farm = &mut ctx.accounts.farm;
     let farmer = &mut ctx.accounts.farmer;
-    let now_ts = now_ts()?;
+    let now_ts = now_ts().unwrap_or(0);
 
     // skipping rewards is an EMERGENCY measure in case farmer's rewards are overflowing
     // at least this lets them get their assets out

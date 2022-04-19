@@ -34,7 +34,7 @@ pub fn handler(ctx: Context<InitVault>, owner: Pubkey, name: String) -> Result<(
     let bank = &mut ctx.accounts.bank;
     let vault = &mut ctx.accounts.vault;
 
-    bank.vault_count.try_add_assign(1)?;
+    bank.vault_count.try_add_assign(1);
 
     // derive the authority responsible for all token transfers within the new vault
     let vault_address = vault.key();

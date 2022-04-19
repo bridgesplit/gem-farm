@@ -94,7 +94,7 @@ pub fn handler(ctx: Context<Claim>) -> Result<()> {
     let farm = &mut ctx.accounts.farm;
     let farmer = &mut ctx.accounts.farmer;
 
-    farm.update_rewards(now_ts()?, Some(farmer), true)?;
+    farm.update_rewards(now_ts().unwrap_or(0), Some(farmer), true)?;
 
     // calculate claimed amounts (capped at what's available in the pot)
     let to_claim_a = farmer

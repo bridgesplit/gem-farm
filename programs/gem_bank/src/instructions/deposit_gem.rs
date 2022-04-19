@@ -201,7 +201,7 @@ fn assert_whitelisted(ctx: &Context<DepositGem>) -> Result<()> {
 pub fn calc_rarity_points(gem_rarity: &AccountInfo, amount: u64) -> Result<u64> {
     if !gem_rarity.data_is_empty() {
         let rarity_account = Account::<Rarity>::try_from(gem_rarity)?;
-        amount.try_mul(rarity_account.points as u64)
+        Ok(amount.try_mul(rarity_account.points as u64)?)
     } else {
         Ok(amount)
     }
@@ -243,11 +243,11 @@ pub fn handler(ctx: Context<DepositGem>, amount: u64) -> Result<()> {
 
     // record total number of gem boxes in vault's state
     let vault = &mut ctx.accounts.vault;
-    vault.gem_box_count.try_add_assign(1)?;
-    vault.gem_count.try_add_assign(amount)?;
+    vault.gem_box_count.try_add_assign(1);
+    vault.gem_count.try_add_assign(amount);
     vault
         .rarity_points
-        .try_add_assign(calc_rarity_points(&ctx.accounts.gem_rarity, amount)?)?;
+        .try_add_assign(calc_rarity_points(&ctx.accounts.gem_rarity, amount)?);
 
     // record a gdr
     let gdr = &mut *ctx.accounts.gem_deposit_receipt;
@@ -256,13 +256,7 @@ pub fn handler(ctx: Context<DepositGem>, amount: u64) -> Result<()> {
     gdr.vault = vault.key();
     gdr.gem_box_address = gem_box.key();
     gdr.gem_mint = gem_box.mint;
-    gdr.gem_count.try_add_assign(amount)?;
-
-    // this check is semi-useless but won't hurt
-    if gdr.gem_count != gem_box.amount.try_add(amount)? {
-        // msg!("{} {}", gdr.gem_count, gem_box.amount);
-        return Err(error!(ErrorCode::AmountMismatch));
-    }
+    gdr.gem_count.try_add_assign(amount);
 
     // msg!("{} gems deposited into {} gem box", amount, gem_box.key());
     Ok(())

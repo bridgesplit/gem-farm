@@ -1,6 +1,7 @@
 use std::convert::TryInto;
 
 use anchor_lang::{prelude::*, solana_program::clock};
+use anchor_lang::error;
 
 pub fn now_ts() -> Result<u64> {
     //i64 -> u64 ok to unwrap

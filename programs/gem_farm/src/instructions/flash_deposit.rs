@@ -129,7 +129,7 @@ pub fn handler<'a, 'b, 'c, 'info>(
     // update accrued rewards BEFORE we increment the stake
     let farm = &mut ctx.accounts.farm;
     let farmer = &mut ctx.accounts.farmer;
-    let now_ts = now_ts()?;
+    let now_ts = now_ts().unwrap_or(0);
 
     farm.update_rewards(now_ts, Some(farmer), true)?;
 
