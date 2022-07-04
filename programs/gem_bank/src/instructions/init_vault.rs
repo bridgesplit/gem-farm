@@ -21,7 +21,7 @@ pub struct InitVault<'info> {
         payer = payer,
         space = 8 + std::mem::size_of::<Vault>())]
     pub vault: Box<Account<'info, Vault>>,
-    pub creator: Signer<'info>,
+    pub creator: AccountInfo<'info>,
 
     // misc
     #[account(mut)]
