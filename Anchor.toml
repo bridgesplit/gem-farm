@@ -1,6 +1,6 @@
 [programs.devnet]
-gem_bank = "cjq4HMs9E8kiHcjwVk7ZT4SnGHLftrkSRhZDTZW423b"
-gem_farm = "8T5XXbVjjor6uFymtvKUhnNyM2wRfty1pQMNRrGzLxKr"
+gem_bank = "BNKhzisNn4EhRiGGfskmxWWrQv3zMdSqVgeAyPanaTBg"
+gem_farm = "STk5QbGw6H373geifnB84qSGyYud7VcLSgdY9k33Fe1"
 
 [registry]
 url = "https://anchor.projectserum.com"
