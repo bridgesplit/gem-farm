@@ -106,6 +106,17 @@ pub mod gem_farm {
         instructions::claim::handler(ctx)
     }
 
+    pub fn claim_and_send(
+        ctx: Context<ClaimAndSend>,
+        _bump_auth: u8,
+        _bump_farmer: u8,
+        _bump_pot_a: u8,
+        _bump_pot_b: u8,
+    ) -> Result<()> {
+        msg!("claim");
+        instructions::claim_and_send::handler(ctx)
+    }
+
     pub fn flash_deposit<'a, 'b, 'c, 'info>(
         ctx: Context<'a, 'b, 'c, 'info, FlashDeposit<'info>>,
         _bump_farmer: u8,
